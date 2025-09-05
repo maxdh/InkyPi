@@ -43,7 +43,9 @@ class ButtonListener:
         try:
             chip = gpiodevice.find_chip_by_platform()
             OFFSETS = [chip.line_offset_from_id(id) for id in BUTTONS]
-            INPUT = gpiod.line.Request(direction=Direction.INPUT, edge_detection=Edge.FALLING, bias=Bias.PULL_UP)
+            # Create settings for all the input pins, we want them to be inputs
+            # with a pull-up and a falling edge detection.
+            INPUT = gpiod.LineSettings(direction=Direction.INPUT, bias=Bias.PULL_UP, edge_detection=Edge.FALLING)
             line_config = dict.fromkeys(OFFSETS, INPUT)
             request = chip.request_lines(consumer="spectra6-buttons", config=line_config)
         except Exception as e:
