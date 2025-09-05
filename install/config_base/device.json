@@ -4,5 +4,5 @@
     "inverted_image": false,
     "scheduler_sleep_time": 60,
     "startup": true,
-    "buttons": true
+    "button_listener": true
 }
