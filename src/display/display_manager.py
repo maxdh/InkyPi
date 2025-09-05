@@ -1,5 +1,4 @@
 import fnmatch
-import json
 import logging
 
 from utils.image_utils import resize_image, change_orientation, apply_image_enhancement
