@@ -1,0 +1,20 @@
+{% extends "plugin.html" %}
+
+{% block content %}
+<div class="wotd-content">
+  <div class="wotd-header">Word of the Day</div>
+  <div class="wotd-word">{{ word }}</div>
+  {% if part_of_speech %}
+  <div class="wotd-pos">{{ part_of_speech }}</div>
+  {% endif %}
+  {% if definition %}
+  <div class="wotd-definition">{{ definition }}</div>
+  {% endif %}
+  {% if example %}
+  <div class="wotd-example">"{{ example }}"</div>
+  {% endif %}
+  {% if note %}
+  <div class="wotd-note">{{ note }}</div>
+  {% endif %}
+</div>
+{% endblock %}
