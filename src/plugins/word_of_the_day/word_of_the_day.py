@@ -75,8 +75,8 @@ class WordOfTheDay(BasePlugin):
         example = ""
         if examples:
             example = examples[0].get("text", "")
-            if len(example) > 150:
-                example = example[:147].rsplit(" ", 1)[0] + "..."
+            if len(example) > 180:
+                example = example[:177].rsplit(" ", 1)[0] + "..."
 
         note = data.get("note", "")
 
