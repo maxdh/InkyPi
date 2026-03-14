@@ -152,7 +152,7 @@
         let longitude = +$longitude.value;
         let zoom = latitude && longitude ? 4.5 : 2.5;
         let selectedTitle = 'location';
-        let weatherProvider = 'OpenWeatherMap';
+        let weatherProvider = 'OpenMeteo';
 
         let map, marker;
 
@@ -207,12 +207,14 @@
             document.getElementById('weatherTimeZone').value = pluginSettings.weatherTimeZone;
             
             selectedTitle = pluginSettings.titleSelection || 'location';
-            weatherProvider = pluginSettings.weatherProvider || 'OpenWeatherMap';
+            weatherProvider = pluginSettings.weatherProvider || 'OpenMeteo';
 
             document.getElementById('customTitle').value = pluginSettings.customTitle || '';
         } else {
             // set default values
-            document.getElementById('units').value = "imperial";
+            document.getElementById('latitude').value = (deviceSettings && deviceSettings.latitude) || '';
+            document.getElementById('longitude').value = (deviceSettings && deviceSettings.longitude) || '';
+            document.getElementById('units').value = "metric";
             document.getElementById('displayRefreshTime').checked = true;
             document.getElementById('displayRefreshTime').value = "true";
             document.getElementById('displayMetrics').checked = true;

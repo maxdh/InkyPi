@@ -4,6 +4,8 @@
     "inverted_image": false,
     "scheduler_sleep_time": 60,
     "startup": true,
+    "latitude": "",
+    "longitude": "",
     "button_listener": true,
     "button_config": {
         "SW_A": {

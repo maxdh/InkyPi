@@ -35,6 +35,7 @@ def plugin_page(plugin_id):
                 template_params["plugin_instance"] = plugin_instance_name
 
             template_params["playlists"] = playlist_manager.get_playlist_names()
+            template_params["device_settings"] = device_config.get_config()
         except Exception as e:
             logger.exception("EXCEPTION CAUGHT: " + str(e))
             return jsonify({"error": f"An error occurred: {str(e)}"}), 500

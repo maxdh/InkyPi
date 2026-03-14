@@ -59,6 +59,8 @@ def save_settings():
             "log_system_stats": form_data.get("logSystemStats"),
             "timezone": form_data.get("timezoneName"),
             "time_format": form_data.get("timeFormat"),
+            "latitude": form_data.get("latitude", ""),
+            "longitude": form_data.get("longitude", ""),
             "plugin_cycle_interval_seconds": plugin_cycle_interval_seconds,
             "image_settings": {
                 "saturation": float(form_data.get("saturation", "1.0")),
