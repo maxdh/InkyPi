@@ -1,0 +1,60 @@
+{
+    "name": "InkyPi",
+    "orientation": "horizontal",
+    "inverted_image": false,
+    "scheduler_sleep_time": 60,
+    "startup": false,
+    "button_listener": true,
+    "button_config": {
+        "SW_A": {
+            "action_type": "plugin_refresh",
+            "plugin_id": "comic",
+            "plugin_settings": {
+                "comic": "XKCD"
+            }
+        },
+        "SW_B": {
+            "action_type": "plugin_refresh",
+            "plugin_id": "comic",
+            "plugin_settings": {
+                "comic": "Saturday Morning Breakfast Cereal"
+            }
+        },
+        "SW_C": {
+            "action_type": "plugin_refresh",
+            "plugin_id": "comic",
+            "plugin_settings": {
+                "comic": "Dinosaur Comics"
+            }
+        },
+        "SW_D": {
+            "action_type": "plugin_refresh",
+            "plugin_id": "comic",
+            "plugin_settings": {
+                "comic": "Cyanide & Happiness"
+            }
+        }
+    },
+    "resolution": [
+        800,
+        480
+    ],
+    "playlist_config": {
+        "playlists": [
+            {
+                "name": "Default",
+                "start_time": "00:00",
+                "end_time": "24:00",
+                "plugins": [],
+                "current_plugin_index": null
+            }
+        ],
+        "active_playlist": null
+    },
+    "refresh_info": {
+        "refresh_time": "2026-03-14T15:32:54.831239+00:00",
+        "image_hash": "93e990b515a5de4b48ea4848304fb7a2d69e0e95ce31aef47d3a1c9351a9f583",
+        "refresh_type": "Manual Update",
+        "plugin_id": "comic"
+    }
+}

@@ -8,17 +8,14 @@ logging.config.fileConfig(os.path.join(os.path.dirname(__file__), 'config', 'log
 import warnings
 warnings.filterwarnings("ignore", message=".*Busy Wait: Held high.*")
 
-import os
 import random
-import time
-import sys
-import json
 import logging
-import threading
 import argparse
+from flask import Flask
+from jinja2 import ChoiceLoader, FileSystemLoader
+from waitress import serve
+
 from utils.app_utils import generate_startup_image
-from flask import Flask, request
-from werkzeug.serving import is_running_from_reloader
 from config import Config
 from display.display_manager import DisplayManager
 from refresh_task import RefreshTask
@@ -26,9 +23,9 @@ from blueprints.main import main_bp
 from blueprints.settings import settings_bp
 from blueprints.plugin import plugin_bp
 from blueprints.playlist import playlist_bp
-from jinja2 import ChoiceLoader, FileSystemLoader
+from blueprints.buttons import buttons_bp
 from plugins.plugin_registry import load_plugins
-from waitress import serve
+from button_listener import ButtonListener
 
 
 logger = logging.getLogger(__name__)
@@ -67,6 +64,13 @@ app.config['DEVICE_CONFIG'] = device_config
 app.config['DISPLAY_MANAGER'] = display_manager
 app.config['REFRESH_TASK'] = refresh_task
 
+# After initializing device_config, display_manager, and refresh_task
+# Start the button listener thread if the setting is enabled
+if device_config.get_config("button_listener", False):
+    logger.info("Starting button listener thread")
+    button_listener = ButtonListener(refresh_task, device_config)
+    button_listener.start()
+
 # Set additional parameters
 app.config['MAX_FORM_PARTS'] = 10_000
 
@@ -75,6 +79,7 @@ app.register_blueprint(main_bp)
 app.register_blueprint(settings_bp)
 app.register_blueprint(plugin_bp)
 app.register_blueprint(playlist_bp)
+app.register_blueprint(buttons_bp)
 
 if __name__ == '__main__':
 
