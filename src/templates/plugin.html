@@ -18,6 +18,7 @@
         const pluginInstanceName ='{{ plugin_instance }}';
         const loadPluginSettings = pluginInstanceName != '';
         const styleSettings = {{ style_settings | default(false) | tojson }};
+        const deviceSettings = {{ device_settings | tojson if device_settings else {} }};
 
         let uploadedFiles = {};
 

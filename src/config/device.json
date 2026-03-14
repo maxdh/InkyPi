@@ -1,7 +1,7 @@
 {
     "name": "InkyPi",
     "orientation": "horizontal",
-    "inverted_image": false,
+    "inverted_image": null,
     "scheduler_sleep_time": 60,
     "startup": false,
     "button_listener": true,
@@ -52,9 +52,21 @@
         "active_playlist": null
     },
     "refresh_info": {
-        "refresh_time": "2026-03-14T15:32:54.831239+00:00",
-        "image_hash": "93e990b515a5de4b48ea4848304fb7a2d69e0e95ce31aef47d3a1c9351a9f583",
+        "refresh_time": "2026-03-14T16:03:06.700091+00:00",
+        "image_hash": "78642f44041dc5cee9de7e9187b6453b95d13df34f26bb514ed309112904140f",
         "refresh_type": "Manual Update",
-        "plugin_id": "comic"
+        "plugin_id": "weather"
+    },
+    "log_system_stats": null,
+    "timezone": "Europe/London",
+    "time_format": "12h",
+    "latitude": "51.44577362836696",
+    "longitude": "-2.6022255602532596",
+    "plugin_cycle_interval_seconds": 3600,
+    "image_settings": {
+        "saturation": 1.0,
+        "brightness": 1.0,
+        "sharpness": 1.0,
+        "contrast": 1.0
     }
 }
