@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Configuration</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}">
+    <script src="{{ url_for('static', filename='scripts/response_modal.js') }}"></script>
+</head>
+<body>
+    <div class="frame">
+        <!-- Back Button -->
+        <button onclick="history.back()" class="back-button">← Back</button>
+        
+        <!-- Header -->
+        <div class="app-header">
+            <div class="header-content">
+                <div class="title-container">
+                    <img src="{{ url_for('static', filename='icons/buttons.png') }}" alt="buttons icon" class="app-icon">
+                    <h1 class="app-title">Button Configuration</h1>
+                </div>
+            </div>
+        </div>
+        <div class="separator"></div>
+        
+        <!-- Content -->
+        <div id="settings-container">
+            <p class="form-label">Configure what happens when you press each button on your InkyPi display.</p>
+            
+            <form id="button-config-form" class="settings-form">
+                {% for button in available_buttons %}
+                <div class="collapsible">
+                    <button type="button" class="collapsible-header" onclick="toggleCollapsible(this)">
+                        {{ button }} Configuration <span class="collapsible-icon">▼</span>
+                    </button>
+                    <div class="settings-container collapsible-content">
+                        <div class="form-group">
+                            <label for="{{ button }}_action_type" class="form-label">Action Type:</label>
+                            <select class="form-input" id="{{ button }}_action_type" name="{{ button }}_action_type">
+                                <option value="plugin_refresh" 
+                                    {% if button_config.get(button, {}).get('action_type') == 'plugin_refresh' %}selected{% endif %}>
+                                    Plugin Refresh
+                                </option>
+                                <!-- Future: Add more action types like playlist_switch, display_toggle, etc. -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ button }}_plugin_id" class="form-label">Plugin:</label>
+                            <select class="form-input plugin-select" id="{{ button }}_plugin_id" name="{{ button }}_plugin_id" data-button="{{ button }}">
+                                <option value="">Select a plugin...</option>
+                                {% for plugin in available_plugins %}
+                                <option value="{{ plugin.id }}" 
+                                    {% if button_config.get(button, {}).get('plugin_id') == plugin.id %}selected{% endif %}>
+                                    {{ plugin.display_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Plugin-specific settings -->
+                        <div id="{{ button }}_plugin_settings" class="plugin-settings">
+                            {% if button_config.get(button, {}).get('plugin_id') %}
+                            <!-- Settings will be loaded dynamically via JavaScript -->
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="button" class="header-button test-button" data-button="{{ button }}" style="background-color: #2c66b1; color: #fff;">
+                                Test {{ button }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </form>
+        </div>
+        
+        <!-- Buttons -->
+        <div class="buttons-container">
+            <button type="button" onclick="saveConfiguration()" class="action-button">Save Configuration</button>
+            <button type="button" onclick="resetConfiguration()" class="header-button" style="background-color: #6c757d; color: #fff;">Reset to Defaults</button>
+        </div>
+    </div>
+
+    <!-- Success/Error Modal -->
+    {% include 'response_modal.html' %}
+
+    <script>
+    function toggleCollapsible(button) {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector(".collapsible-icon");
+        button.classList.toggle("active");
+        content.style.display = content.style.display === "block" ? "none" : "block";
+        icon.textContent = content.style.display === "block" ? "▲" : "▼";
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('button-config-form');
+        
+        // Load existing plugin settings on page load
+        document.querySelectorAll('.plugin-select').forEach(select => {
+            const button = select.dataset.button;
+            const pluginId = select.value;
+            
+            if (pluginId) {
+                // Trigger change event to load settings for existing configuration
+                const event = new Event('change');
+                select.dispatchEvent(event);
+            }
+        });
+        
+        // Handle plugin selection changes
+        document.querySelectorAll('.plugin-select').forEach(select => {
+            select.addEventListener('change', function() {
+                const button = this.dataset.button;
+                const pluginId = this.value;
+                const settingsDiv = document.getElementById(`${button}_plugin_settings`);
+                
+                // Clear existing settings
+                settingsDiv.innerHTML = '';
+                
+                if (pluginId) {
+                    // Load plugin-specific settings template following plugin documentation pattern
+                    fetch(`/buttons/plugin_settings_html/${pluginId}/${button}`)
+                        .then(response => {
+                            if (response.ok) {
+                                return response.text();
+                            } else {
+                                throw new Error('Failed to load plugin settings');
+                            }
+                        })
+                        .then(html => {
+                            settingsDiv.innerHTML = html;
+                            
+                            // Execute any scripts in the loaded HTML (for plugin-specific JavaScript)
+                            const scripts = settingsDiv.querySelectorAll('script');
+                            scripts.forEach(script => {
+                                const newScript = document.createElement('script');
+                                newScript.textContent = script.textContent;
+                                document.head.appendChild(newScript);
+                                document.head.removeChild(newScript);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error loading plugin settings:', error);
+                            settingsDiv.innerHTML = `<div class="form-group"><span style="color: red;">Error loading plugin settings</span></div>`;
+                        });
+                }
+            });
+        });
+        
+        // Handle test buttons
+        document.querySelectorAll('.test-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const buttonName = this.dataset.button;
+                const originalText = this.textContent;
+                
+                this.disabled = true;
+                this.textContent = 'Testing...';
+                
+                fetch(`/buttons/test/${buttonName}`, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showResponseModal('success', data.message);
+                    } else {
+                        showResponseModal('failure', data.error || 'Test failed');
+                    }
+                })
+                .catch(error => {
+                    showResponseModal('failure', 'Network error: ' + error.message);
+                })
+                .finally(() => {
+                    this.disabled = false;
+                    this.textContent = originalText;
+                });
+            });
+        });
+    });
+    
+    async function saveConfiguration() {
+        const form = document.getElementById('button-config-form');
+        const formData = new FormData(form);
+        
+        try {
+            const response = await fetch('/buttons/save', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            if (response.ok) {
+                showResponseModal('success', data.message);
+            } else {
+                showResponseModal('failure', data.error || 'Failed to save configuration');
+            }
+        } catch (error) {
+            showResponseModal('failure', 'Network error: ' + error.message);
+        }
+    }
+    
+    async function resetConfiguration() {
+        if (confirm('Are you sure you want to reset button configuration to defaults?')) {
+            try {
+                const response = await fetch('/buttons/reset', {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                if (response.ok) {
+                    showResponseModal('success', data.message);
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showResponseModal('failure', data.error || 'Failed to reset configuration');
+                }
+            } catch (error) {
+                showResponseModal('failure', 'Network error: ' + error.message);
+            }
+        }
+    }
+    </script>
+</body>
+</html>

@@ -4,5 +4,27 @@
     "inverted_image": false,
     "scheduler_sleep_time": 60,
     "startup": true,
-    "button_listener": true
+    "button_listener": true,
+    "button_config": {
+        "SW_A": {
+            "action_type": "plugin_refresh",
+            "plugin_id": "comic",
+            "plugin_settings": {"comic": "XKCD"}
+        },
+        "SW_B": {
+            "action_type": "plugin_refresh",
+            "plugin_id": "comic",
+            "plugin_settings": {"comic": "Saturday Morning Breakfast Cereal"}
+        },
+        "SW_C": {
+            "action_type": "plugin_refresh",
+            "plugin_id": "comic",
+            "plugin_settings": {"comic": "Dinosaur Comics"}
+        },
+        "SW_D": {
+            "action_type": "plugin_refresh",
+            "plugin_id": "comic",
+            "plugin_settings": {"comic": "Cyanide & Happiness"}
+        }
+    }
 }

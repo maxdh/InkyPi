@@ -23,6 +23,7 @@ from blueprints.main import main_bp
 from blueprints.settings import settings_bp
 from blueprints.plugin import plugin_bp
 from blueprints.playlist import playlist_bp
+from blueprints.buttons import buttons_bp
 from plugins.plugin_registry import load_plugins
 from button_listener import ButtonListener
 
@@ -78,6 +79,7 @@ app.register_blueprint(main_bp)
 app.register_blueprint(settings_bp)
 app.register_blueprint(plugin_bp)
 app.register_blueprint(playlist_bp)
+app.register_blueprint(buttons_bp)
 
 if __name__ == '__main__':
 
