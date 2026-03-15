@@ -52,10 +52,10 @@
         "active_playlist": null
     },
     "refresh_info": {
-        "refresh_time": "2026-03-14T16:03:06.700091+00:00",
-        "image_hash": "78642f44041dc5cee9de7e9187b6453b95d13df34f26bb514ed309112904140f",
+        "refresh_time": "2026-03-15T20:48:47.531296+00:00",
+        "image_hash": "807f6c568d7776595a77b36b25608c7dc48783538fb4dce55db20dc827b76fca",
         "refresh_type": "Manual Update",
-        "plugin_id": "weather"
+        "plugin_id": "nova_canvas"
     },
     "log_system_stats": null,
     "timezone": "Europe/London",

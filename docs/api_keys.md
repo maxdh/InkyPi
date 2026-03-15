@@ -68,13 +68,15 @@ Required for the Unsplash Plugin
 - Your KEY is listed as `Access Key`
 - Save your access key in `/.env` file as `UNSPLASH_ACCESS_KEY=`
 
-## Wordnik API Key
+## AWS Bedrock (Nova Canvas)
 
-Required for the Word of the Day Plugin
+Required for the Nova Canvas Plugin
 
-- Register for a free account at [Wordnik Developer](https://developer.wordnik.com/)
-- Request an API key from your account dashboard
-- Store your api key in the .env file with the key WORDNIK_API_KEY
+- An IAM user `inkypi-nova-canvas` has been created with a scoped policy that only allows `bedrock:InvokeModel` on the Nova Canvas model
+- Make sure the Nova Canvas model (`amazon.nova-canvas-v1:0`) is enabled in your Bedrock console in us-east-1
+- Store your credentials in the .env file:
     ```
-    WORDNIK_API_KEY=your-key
+    AWS_NOVA_ACCESS_KEY_ID=your-access-key
+    AWS_NOVA_SECRET_ACCESS_KEY=your-secret-key
+    AWS_NOVA_REGION=us-east-1
     ```
