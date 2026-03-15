@@ -67,3 +67,14 @@ Required for the Unsplash Plugin
 - Create an app and open it
 - Your KEY is listed as `Access Key`
 - Save your access key in `/.env` file as `UNSPLASH_ACCESS_KEY=`
+
+## Wordnik API Key
+
+Required for the Word of the Day Plugin
+
+- Register for a free account at [Wordnik Developer](https://developer.wordnik.com/)
+- Request an API key from your account dashboard
+- Store your api key in the .env file with the key WORDNIK_API_KEY
+    ```
+    WORDNIK_API_KEY=your-key
+    ```
